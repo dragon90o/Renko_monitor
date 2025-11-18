@@ -1,97 +1,97 @@
-# 🧱 Monitor Renko - Interfaz Gráfica
+# 🧱 Renko Monitor - Graphical Interface
 
-## ¿Qué es esto?
-Un monitor en tiempo real que te ayuda a identificar reversiones de tendencia en Forex usando **ladrillos Renko**.
+## What is this?
+A real-time monitor that helps you identify trend reversals in Forex using **Renko bricks**.
 
-### ¿Cómo funciona?
-Los **ladrillos Renko** ignoran el tiempo y solo se forman cuando el precio se mueve una cantidad específica (ej: 10 pips):
-- 🟢 **Ladrillo Verde**: El precio subió 10 pips
-- 🔴 **Ladrillo Rojo**: El precio bajó 10 pips
+### How does it work?
+**Renko bricks** ignore time and only form when the price moves a specific amount (e.g., 10 pips):
+- 🟢 **Green Brick**: Price went up 10 pips
+- 🔴 **Red Brick**: Price went down 10 pips
 
-**Señal de Reversión**: Cuando aparecen 3+ ladrillos del color opuesto consecutivos
-- Ejemplo: Si tenías 5 verdes 🟢🟢🟢🟢🟢 y aparecen 3 rojos 🔴🔴🔴 → **¡ALERTA! Posible reversión bajista**
+**Reversal Signal**: When 3+ consecutive bricks of the opposite color appear
+- Example: If you had 5 greens 🟢🟢🟢🟢🟢 and 3 reds appear 🔴🔴🔴 → **ALERT! Possible bearish reversal**
 
-## Lo que verás en la pantalla
+## What you'll see on screen
 
-### 💰 Información de Precio
-- **Precio Actual**: Precio en vivo del mercado
-- **Precio Ladrillo**: Precio donde se forma el próximo ladrillo
-- **Distancia**: Cuántos pips faltan para el siguiente ladrillo (ej: "3.8 pips de 10 pips")
+### 💰 Price Information
+- **Current Price**: Live market price
+- **Brick Price**: Price where the next brick forms
+- **Distance**: How many pips until the next brick (e.g., "3.8 pips of 10 pips")
 
-### 📊 Estado de Tendencia
-Indica qué tan fuerte es la tendencia actual:
-- 🚀 **ALCISTA FUERTE** (5+ verdes) → Sigue comprando
-- 📈 **ALCISTA** (3-4 verdes) → Tendencia alcista confirmada
-- 📉 **BAJISTA** (3-4 rojos) → Tendencia bajista confirmada
-- 💥 **BAJISTA FUERTE** (5+ rojos) → Sigue vendiendo
-- ⚪ **NEUTRAL** → Sin tendencia clara, espera
+### 📊 Trend Status
+Indicates how strong the current trend is:
+- 🚀 **STRONG BULLISH** (5+ greens) → Keep buying
+- 📈 **BULLISH** (3-4 greens) → Confirmed bullish trend
+- 📉 **BEARISH** (3-4 reds) → Confirmed bearish trend
+- 💥 **STRONG BEARISH** (5+ reds) → Keep selling
+- ⚪ **NEUTRAL** → No clear trend, wait
 
-### 💡 Recomendaciones Automáticas
-Te dice qué hacer según la tendencia:
-- **Tendencia alcista**: Mantén BUYs, NO abras SELLs
-- **Tendencia bajista**: Mantén SELLs, NO abras BUYs
-- **Sin tendencia**: Espera, no hagas nada
+### 💡 Automatic Recommendations
+Tells you what to do based on the trend:
+- **Bullish trend**: Hold BUYs, DON'T open SELLs
+- **Bearish trend**: Hold SELLs, DON'T open BUYs
+- **No trend**: Wait, do nothing
 
-### 🚨 Alertas de Reversión
-Cuando detecta una reversión (3+ ladrillos opuestos):
-- Muestra alerta grande en pantalla
-- Suena un beep
-- Te dice qué posiciones considerar cerrar
+### 🚨 Reversal Alerts
+When it detects a reversal (3+ opposite bricks):
+- Shows large alert on screen
+- Plays a beep sound
+- Tells you which positions to consider closing
 
-## Cómo Usar (Paso a Paso)
+## How to Use (Step by Step)
 
-### 1️⃣ Preparar el Entorno
+### 1️⃣ Prepare the Environment
 ```bash
-# Ir al directorio
+# Go to directory
 cd C:\Users\dravv\Scripts\Python-files\renko_monitor
 
-# Activar entorno virtual
+# Activate virtual environment
 venv\Scripts\activate
 ```
 
-### 2️⃣ Abrir MetaTrader 5
-- Abre MT5 y conéctate a tu cuenta (demo o real)
-- Déjalo abierto en segundo plano
+### 2️⃣ Open MetaTrader 5
+- Open MT5 and connect to your account (demo or real)
+- Leave it running in the background
 
-### 3️⃣ Iniciar el Monitor
+### 3️⃣ Start the Monitor
 ```bash
 python renko_monitor_gui.py
 ```
 
-### 4️⃣ Configurar y Monitorear
-1. **Selecciona el par de divisas** (EURUSD, GBPUSD, etc.)
-2. **Selecciona el tamaño de ladrillo** (10 pips recomendado para empezar)
-3. Haz clic en **▶ INICIAR MONITOR**
-4. ¡Listo! Observa los ladrillos y espera las alertas
+### 4️⃣ Configure and Monitor
+1. **Select the currency pair** (EURUSD, GBPUSD, etc.)
+2. **Select the brick size** (10 pips recommended to start)
+3. Click **▶ START MONITOR**
+4. Done! Watch the bricks and wait for alerts
 
-### 5️⃣ Detener
-- Botón **⏸ DETENER** o presiona **Ctrl+C**
+### 5️⃣ Stop
+- **⏸ STOP** button or press **Ctrl+C**
 
-## ⚙️ Configuración de Tamaño de Ladrillo
+## ⚙️ Brick Size Configuration
 
-Elige según tu estilo de trading:
-- **5 pips**: Scalping (entradas/salidas rápidas)
-- **10 pips**: Intraday (recomendado para empezar)
-- **20-30 pips**: Swing trading (posiciones de horas/días)
-- **50 pips**: Position trading (posiciones largas)
+Choose according to your trading style:
+- **5 pips**: Scalping (quick entries/exits)
+- **10 pips**: Intraday (recommended to start)
+- **20-30 pips**: Swing trading (positions for hours/days)
+- **50 pips**: Position trading (long positions)
 
-## 🔧 Solución de Problemas
+## 🔧 Troubleshooting
 
-| Error | Solución |
+| Error | Solution |
 |-------|----------|
-| "No se pudo conectar a MT5" | Abre MT5 y conéctate a tu cuenta |
-| "No se pudo obtener precio" | Verifica que el símbolo existe en tu broker |
-| "Symbol not found" | Algunos brokers usan nombres diferentes (ej: EURUSD.i) |
-| La ventana se ve cortada | Redimensiona la ventana o usa pantalla más grande |
+| "Could not connect to MT5" | Open MT5 and connect to your account |
+| "Could not get price" | Verify the symbol exists with your broker |
+| "Symbol not found" | Some brokers use different names (e.g., EURUSD.i) |
+| Window looks cut off | Resize the window or use a larger screen |
 
-## 📋 Requisitos
-- ✅ Windows (MT5 solo funciona en Windows)
+## 📋 Requirements
+- ✅ Windows (MT5 only works on Windows)
 - ✅ Python 3.11.7
-- ✅ MetaTrader 5 instalado
-- ✅ Cuenta MT5 (demo funciona perfectamente)
+- ✅ MetaTrader 5 installed
+- ✅ MT5 account (demo works perfectly)
 
-## 🎯 Características Adicionales
-- **Interfaz Responsiva**: Se adapta a diferentes tamaños de pantalla
-- **Layout Adaptativo**: En pantallas pequeñas, los paneles se apilan verticalmente
-- **Actualización en Tiempo Real**: Cada 1 segundo
-- **Multi-Divisa**: 8 pares de divisas disponibles
+## 🎯 Additional Features
+- **Responsive Interface**: Adapts to different screen sizes
+- **Adaptive Layout**: On small screens, panels stack vertically
+- **Real-Time Updates**: Every 1 second
+- **Multi-Currency**: 8 currency pairs available

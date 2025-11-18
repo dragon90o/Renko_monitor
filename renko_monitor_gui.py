@@ -1,6 +1,6 @@
 """
-🧱 MONITOR RENKO EN VIVO - INTERFAZ GRÁFICA
-Monitor profesional de reversiones Renko con interfaz moderna
+🧱 LIVE RENKO MONITOR - GRAPHICAL INTERFACE
+Professional Renko reversal monitor with modern interface
 """
 
 import customtkinter as ctk
@@ -18,26 +18,26 @@ class RenkoMonitorGUI:
         ctk.set_appearance_mode("dark")
         ctk.set_default_color_theme("blue")
 
-        # Ventana principal
+        # Main window
         self.root = ctk.CTk()
-        self.root.title("🧱 Monitor Renko en Vivo")
+        self.root.title("🧱 Live Renko Monitor")
 
-        # Obtener tamaño de pantalla
+        # Get screen size
         screen_width = self.root.winfo_screenwidth()
         screen_height = self.root.winfo_screenheight()
 
-        # Calcular tamaño de ventana (70% de la pantalla)
+        # Calculate window size (70% of screen)
         window_width = min(1100, int(screen_width * 0.7))
         window_height = min(750, int(screen_height * 0.8))
 
-        # Centrar ventana
+        # Center window
         x = (screen_width - window_width) // 2
         y = (screen_height - window_height) // 2
 
         self.root.geometry(f"{window_width}x{window_height}+{x}+{y}")
-        self.root.minsize(900, 600)  # Tamaño mínimo
+        self.root.minsize(900, 600)  # Minimum size
 
-        # Variables del monitor
+        # Monitor variables
         self.symbol = "EURUSD"
         self.brick_size_pips = 10
         self.brick_size = self.brick_size_pips / 10000
@@ -48,20 +48,20 @@ class RenkoMonitorGUI:
         self.monitor_thread = None
         self.mt5_connected = False
 
-        # Variables de UI
+        # UI variables
         self.info_container = None
         self.trend_frame = None
         self.rec_frame = None
         self.current_layout = "horizontal"
 
-        # Crear interfaz
+        # Create interface
         self.create_widgets()
 
-        # Configurar evento de redimensionamiento
+        # Configure resize event
         self.root.bind("<Configure>", self.on_window_resize)
 
     def create_widgets(self):
-        """Crear todos los widgets de la interfaz"""
+        """Create all interface widgets"""
 
         # ========== HEADER ==========
         header_frame = ctk.CTkFrame(self.root, corner_radius=0, fg_color="#1a1a1a")
@@ -69,18 +69,18 @@ class RenkoMonitorGUI:
 
         title_label = ctk.CTkLabel(
             header_frame,
-            text="🧱 MONITOR RENKO EN VIVO",
+            text="🧱 LIVE RENKO MONITOR",
             font=ctk.CTkFont(size=24, weight="bold")
         )
         title_label.pack(pady=(15, 10))
 
-        # ========== BOTONES DE CONTROL ==========
+        # ========== CONTROL BUTTONS ==========
         button_frame = ctk.CTkFrame(header_frame, fg_color="transparent")
         button_frame.pack(pady=(0, 15))
 
         self.start_button = ctk.CTkButton(
             button_frame,
-            text="▶ INICIAR MONITOR",
+            text="▶ START MONITOR",
             font=ctk.CTkFont(size=14, weight="bold"),
             height=40,
             width=180,
@@ -92,7 +92,7 @@ class RenkoMonitorGUI:
 
         self.stop_button = ctk.CTkButton(
             button_frame,
-            text="⏸ DETENER",
+            text="⏸ STOP",
             font=ctk.CTkFont(size=14, weight="bold"),
             height=40,
             width=180,
@@ -103,25 +103,25 @@ class RenkoMonitorGUI:
         )
         self.stop_button.pack(side="left", padx=10)
 
-        # ========== PANEL DE CONFIGURACIÓN ==========
+        # ========== CONFIGURATION PANEL ==========
         config_frame = ctk.CTkFrame(self.root, fg_color="#2b2b2b")
         config_frame.pack(fill="x", padx=20, pady=(20, 10))
 
-        # Título de configuración
+        # Configuration title
         ctk.CTkLabel(
             config_frame,
-            text="⚙️ CONFIGURACIÓN",
+            text="⚙️ CONFIGURATION",
             font=ctk.CTkFont(size=14, weight="bold")
         ).pack(pady=(10, 5))
 
-        # Frame interno para controles
+        # Inner frame for controls
         controls_frame = ctk.CTkFrame(config_frame, fg_color="transparent")
         controls_frame.pack(pady=(5, 15))
 
-        # Selector de Divisa
+        # Currency selector
         ctk.CTkLabel(
             controls_frame,
-            text="Par de Divisas:",
+            text="Currency Pair:",
             font=ctk.CTkFont(size=12)
         ).grid(row=0, column=0, padx=10, pady=5, sticky="e")
 
@@ -135,10 +135,10 @@ class RenkoMonitorGUI:
         )
         symbol_combo.grid(row=0, column=1, padx=10, pady=5)
 
-        # Selector de Tamaño de Ladrillo
+        # Brick size selector
         ctk.CTkLabel(
             controls_frame,
-            text="Tamaño Ladrillo (pips):",
+            text="Brick Size (pips):",
             font=ctk.CTkFont(size=12)
         ).grid(row=0, column=2, padx=10, pady=5, sticky="e")
 
@@ -152,24 +152,24 @@ class RenkoMonitorGUI:
         )
         brick_size_combo.grid(row=0, column=3, padx=10, pady=5)
 
-        # ========== SEPARADOR ==========
+        # ========== SEPARATOR ==========
         separator1 = ctk.CTkFrame(self.root, height=2, fg_color="gray")
         separator1.pack(fill="x", padx=40, pady=5)
 
-        # ========== PANEL DE PRECIOS ==========
+        # ========== PRICE PANEL ==========
         price_frame = ctk.CTkFrame(self.root, fg_color="#2b2b2b")
         price_frame.pack(fill="x", padx=20, pady=8)
 
-        # Grid de 3 columnas
+        # 3-column grid
         price_frame.grid_columnconfigure((0, 1, 2), weight=1)
 
-        # Precio Actual
+        # Current price
         price_box1 = ctk.CTkFrame(price_frame, fg_color="#1a1a1a")
         price_box1.grid(row=0, column=0, padx=10, pady=10, sticky="ew")
 
         ctk.CTkLabel(
             price_box1,
-            text="💰 PRECIO ACTUAL",
+            text="💰 CURRENT PRICE",
             font=ctk.CTkFont(size=12, weight="bold"),
             text_color="gray"
         ).pack(pady=(10, 2))
@@ -182,13 +182,13 @@ class RenkoMonitorGUI:
         )
         self.current_price_label.pack(pady=(2, 10))
 
-        # Precio Ladrillo
+        # Brick price
         price_box2 = ctk.CTkFrame(price_frame, fg_color="#1a1a1a")
         price_box2.grid(row=0, column=1, padx=10, pady=10, sticky="ew")
 
         ctk.CTkLabel(
             price_box2,
-            text="🎯 PRECIO LADRILLO",
+            text="🎯 BRICK PRICE",
             font=ctk.CTkFont(size=12, weight="bold"),
             text_color="gray"
         ).pack(pady=(10, 2))
@@ -201,13 +201,13 @@ class RenkoMonitorGUI:
         )
         self.brick_price_label.pack(pady=(2, 10))
 
-        # Distancia
+        # Distance
         price_box3 = ctk.CTkFrame(price_frame, fg_color="#1a1a1a")
         price_box3.grid(row=0, column=2, padx=10, pady=10, sticky="ew")
 
         ctk.CTkLabel(
             price_box3,
-            text="📏 DISTANCIA",
+            text="📏 DISTANCE",
             font=ctk.CTkFont(size=12, weight="bold"),
             text_color="gray"
         ).pack(pady=(10, 2))
@@ -220,28 +220,28 @@ class RenkoMonitorGUI:
         )
         self.distance_label.pack(pady=(2, 10))
 
-        # ========== SEPARADOR ==========
+        # ========== SEPARATOR ==========
         separator2 = ctk.CTkFrame(self.root, height=2, fg_color="gray")
         separator2.pack(fill="x", padx=40, pady=5)
 
-        # ========== CONTENEDOR PARA TENDENCIA Y RECOMENDACIONES ==========
+        # ========== CONTAINER FOR TREND AND RECOMMENDATIONS ==========
         self.info_container = ctk.CTkFrame(self.root, fg_color="transparent")
         self.info_container.pack(fill="both", expand=False, padx=20, pady=8)
         self.info_container.grid_columnconfigure(0, weight=1, minsize=400)
         self.info_container.grid_columnconfigure(1, weight=1, minsize=400)
         self.info_container.grid_rowconfigure(0, weight=1)
 
-        # ========== PANEL DE TENDENCIA (IZQUIERDA) ==========
+        # ========== TREND PANEL (LEFT) ==========
         self.trend_frame = ctk.CTkFrame(self.info_container, fg_color="#2b2b2b")
         self.trend_frame.grid(row=0, column=0, padx=(0, 5), sticky="nsew")
 
         ctk.CTkLabel(
             self.trend_frame,
-            text="📊 ESTADO DE TENDENCIA",
+            text="📊 TREND STATUS",
             font=ctk.CTkFont(size=14, weight="bold")
         ).pack(pady=(10, 5))
 
-        # Frame para emoji y texto
+        # Frame for emoji and text
         trend_content = ctk.CTkFrame(self.trend_frame, fg_color="#1a1a1a")
         trend_content.pack(fill="both", expand=True, padx=15, pady=(5, 10))
 
@@ -254,7 +254,7 @@ class RenkoMonitorGUI:
 
         self.trend_label = ctk.CTkLabel(
             trend_content,
-            text="NEUTRAL / SIN TENDENCIA",
+            text="NEUTRAL / NO TREND",
             font=ctk.CTkFont(size=16, weight="bold"),
             text_color="white"
         )
@@ -262,19 +262,19 @@ class RenkoMonitorGUI:
 
         self.trend_count_label = ctk.CTkLabel(
             trend_content,
-            text="Ladrillos consecutivos: 0",
+            text="Consecutive bricks: 0",
             font=ctk.CTkFont(size=11),
             text_color="gray"
         )
         self.trend_count_label.pack(pady=(2, 8))
 
-        # ========== PANEL DE RECOMENDACIONES (DERECHA) ==========
+        # ========== RECOMMENDATIONS PANEL (RIGHT) ==========
         self.rec_frame = ctk.CTkFrame(self.info_container, fg_color="#2b2b2b")
         self.rec_frame.grid(row=0, column=1, padx=(5, 0), sticky="nsew")
 
         ctk.CTkLabel(
             self.rec_frame,
-            text="💡 RECOMENDACIONES DE TRADING",
+            text="💡 TRADING RECOMMENDATIONS",
             font=ctk.CTkFont(size=14, weight="bold")
         ).pack(pady=(10, 5))
 
@@ -285,20 +285,20 @@ class RenkoMonitorGUI:
             fg_color="#1a1a1a"
         )
         self.rec_textbox.pack(fill="both", expand=True, padx=15, pady=(5, 10))
-        self.rec_textbox.insert("1.0", "   ⚪ Sin tendencia clara - Esperar\n   ⚪ No tomar nuevas posiciones")
+        self.rec_textbox.insert("1.0", "   ⚪ No clear trend - Wait\n   ⚪ Don't take new positions")
         self.rec_textbox.configure(state="disabled")
 
-        # ========== PANEL DE LADRILLOS ==========
+        # ========== BRICKS PANEL ==========
         bricks_frame = ctk.CTkFrame(self.root, fg_color="#2b2b2b")
         bricks_frame.pack(fill="x", padx=20, pady=8)
 
         ctk.CTkLabel(
             bricks_frame,
-            text="📜 ÚLTIMOS 20 LADRILLOS",
+            text="📜 LAST 20 BRICKS",
             font=ctk.CTkFont(size=14, weight="bold")
         ).pack(pady=(10, 5))
 
-        # Textbox para mostrar ladrillos
+        # Textbox to display bricks
         self.bricks_display = ctk.CTkTextbox(
             bricks_frame,
             height=60,
@@ -310,7 +310,7 @@ class RenkoMonitorGUI:
         self.bricks_display.insert("1.0", "⚪")
         self.bricks_display.configure(state="disabled")
 
-        # ========== PANEL DE ALERTAS (oculto por defecto) ==========
+        # ========== ALERT PANEL (hidden by default) ==========
         self.alert_frame = ctk.CTkFrame(self.root, fg_color="#dc3545")
         self.alert_label = ctk.CTkLabel(
             self.alert_frame,
@@ -320,7 +320,7 @@ class RenkoMonitorGUI:
         )
         self.alert_label.pack(pady=10)
 
-        # ========== PANEL DE STATUS ==========
+        # ========== STATUS PANEL ==========
         status_container = ctk.CTkFrame(self.root, fg_color="#1a1a1a")
         status_container.pack(fill="x", padx=20, pady=(10, 15))
 
@@ -329,7 +329,7 @@ class RenkoMonitorGUI:
 
         self.status_label = ctk.CTkLabel(
             status_frame,
-            text="⚪ Desconectado",
+            text="⚪ Disconnected",
             font=ctk.CTkFont(size=11),
             text_color="gray"
         )
@@ -344,41 +344,41 @@ class RenkoMonitorGUI:
 
         self.time_label = ctk.CTkLabel(
             status_frame,
-            text="🕐 Última actualización: -",
+            text="🕐 Last update: -",
             font=ctk.CTkFont(size=11),
             text_color="gray"
         )
         self.time_label.pack(side="left", padx=10)
 
     def connect_mt5(self):
-        """Conectar a MetaTrader 5"""
+        """Connect to MetaTrader 5"""
         if not mt5.initialize():
             messagebox.showerror(
-                "Error de Conexión",
-                "No se pudo conectar a MT5.\n\nAsegúrate de que MetaTrader 5 esté abierto y ejecutándose."
+                "Connection Error",
+                "Could not connect to MT5.\n\nMake sure MetaTrader 5 is open and running."
             )
             return False
 
         self.mt5_connected = True
-        self.status_label.configure(text="🟢 Conectado a MT5", text_color="#28a745")
+        self.status_label.configure(text="🟢 Connected to MT5", text_color="#28a745")
         return True
 
     def get_current_price(self):
-        """Obtener precio actual del mercado"""
+        """Get current market price"""
         tick = mt5.symbol_info_tick(self.symbol)
         if tick is None:
             return None
         return tick.bid
 
     def initialize_renko(self):
-        """Inicializar primer ladrillo desde precio actual"""
+        """Initialize first brick from current price"""
         price = self.get_current_price()
         if price is None:
             return False
 
         self.current_brick_price = round(price / self.brick_size) * self.brick_size
 
-        # Crear primer ladrillo neutral
+        # Create first neutral brick
         self.bricks.append({
             'price': self.current_brick_price,
             'direction': 0,
@@ -388,7 +388,7 @@ class RenkoMonitorGUI:
         return True
 
     def update_renko(self, current_price):
-        """Actualizar ladrillos Renko con precio actual"""
+        """Update Renko bricks with current price"""
         new_bricks = []
 
         while abs(current_price - self.current_brick_price) >= self.brick_size:
@@ -413,7 +413,7 @@ class RenkoMonitorGUI:
         return new_bricks
 
     def get_trend_status(self):
-        """Determinar tendencia actual"""
+        """Determine current trend"""
         if len(self.bricks) < 1:
             return 'NEUTRAL', 0
 
@@ -444,7 +444,7 @@ class RenkoMonitorGUI:
             return 'NEUTRAL', count
 
     def check_reversal(self):
-        """Detectar reversión de tendencia"""
+        """Detect trend reversal"""
         if len(self.bricks) < 4:
             return False, 0, 0
 
@@ -466,67 +466,67 @@ class RenkoMonitorGUI:
         return False, 0, 0
 
     def update_display(self):
-        """Actualizar todos los elementos visuales"""
+        """Update all visual elements"""
         try:
             current_price = self.get_current_price()
             if current_price is None:
                 return
 
-            # Actualizar precio actual
+            # Update current price
             self.current_price_label.configure(text=f"{current_price:.5f}")
 
-            # Actualizar precio del ladrillo
+            # Update brick price
             if self.current_brick_price:
                 self.brick_price_label.configure(text=f"{self.current_brick_price:.5f}")
 
-                # Calcular y mostrar distancia
+                # Calculate and display distance
                 distance = abs(current_price - self.current_brick_price)
                 distance_pips = distance * 10000
                 self.distance_label.configure(
-                    text=f"{distance_pips:.1f} pips de {self.brick_size_pips} pips"
+                    text=f"{distance_pips:.1f} pips of {self.brick_size_pips} pips"
                 )
 
-            # Actualizar tendencia
+            # Update trend
             trend, count = self.get_trend_status()
             self.update_trend_display(trend, count)
 
-            # Actualizar ladrillos
+            # Update bricks
             self.update_bricks_display()
 
-            # Actualizar recomendaciones
+            # Update recommendations
             self.update_recommendations(trend)
 
-            # Actualizar hora
+            # Update time
             now = datetime.now().strftime("%H:%M:%S")
-            self.time_label.configure(text=f"🕐 Última actualización: {now}")
+            self.time_label.configure(text=f"🕐 Last update: {now}")
 
         except Exception as e:
             print(f"Error en update_display: {e}")
 
     def update_trend_display(self, trend, count):
-        """Actualizar visualización de tendencia"""
+        """Update trend visualization"""
         trend_config = {
-            'STRONG_UP': ('🚀', 'TENDENCIA ALCISTA FUERTE', '#00ff00'),
-            'UP': ('📈', 'TENDENCIA ALCISTA', '#90EE90'),
-            'WEAK_UP': ('↗️', 'ALCISTA DÉBIL', '#FFD700'),
-            'NEUTRAL': ('⚪', 'NEUTRAL / SIN TENDENCIA', 'white'),
-            'WEAK_DOWN': ('↘️', 'BAJISTA DÉBIL', '#FFD700'),
-            'DOWN': ('📉', 'TENDENCIA BAJISTA', '#FF6347'),
-            'STRONG_DOWN': ('💥', 'TENDENCIA BAJISTA FUERTE', '#ff0000')
+            'STRONG_UP': ('🚀', 'STRONG BULLISH TREND', '#00ff00'),
+            'UP': ('📈', 'BULLISH TREND', '#90EE90'),
+            'WEAK_UP': ('↗️', 'WEAK BULLISH', '#FFD700'),
+            'NEUTRAL': ('⚪', 'NEUTRAL / NO TREND', 'white'),
+            'WEAK_DOWN': ('↘️', 'WEAK BEARISH', '#FFD700'),
+            'DOWN': ('📉', 'BEARISH TREND', '#FF6347'),
+            'STRONG_DOWN': ('💥', 'STRONG BEARISH TREND', '#ff0000')
         }
 
         emoji, label, color = trend_config.get(trend, ('⚪', 'NEUTRAL', 'white'))
 
         self.trend_emoji_label.configure(text=emoji)
         self.trend_label.configure(text=label, text_color=color)
-        self.trend_count_label.configure(text=f"📊 Ladrillos consecutivos: {count}")
+        self.trend_count_label.configure(text=f"📊 Consecutive bricks: {count}")
 
     def update_bricks_display(self):
-        """Actualizar visualización de ladrillos"""
+        """Update bricks visualization"""
         if not self.bricks:
             return
 
-        # Obtener últimos 20 ladrillos
+        # Get last 20 bricks
         recent_bricks = self.bricks[-20:] if len(self.bricks) > 20 else self.bricks
 
         brick_str = "   "
@@ -544,24 +544,24 @@ class RenkoMonitorGUI:
         self.bricks_display.configure(state="disabled")
 
     def update_recommendations(self, trend):
-        """Actualizar recomendaciones de trading"""
+        """Update trading recommendations"""
         rec_text = ""
 
         if trend in ['STRONG_UP', 'UP']:
-            rec_text = "   ✅ Seguro mantener posiciones BUY\n"
-            rec_text += "   ✅ Buscar entradas BUY en pullbacks\n"
-            rec_text += "   ❌ NO abrir posiciones SELL (contra tendencia)"
+            rec_text = "   ✅ Safe to hold BUY positions\n"
+            rec_text += "   ✅ Look for BUY entries on pullbacks\n"
+            rec_text += "   ❌ DON'T open SELL positions (against trend)"
         elif trend in ['STRONG_DOWN', 'DOWN']:
-            rec_text = "   ✅ Seguro mantener posiciones SELL\n"
-            rec_text += "   ✅ Buscar entradas SELL en rebotes\n"
-            rec_text += "   ❌ NO abrir posiciones BUY (contra tendencia)"
+            rec_text = "   ✅ Safe to hold SELL positions\n"
+            rec_text += "   ✅ Look for SELL entries on bounces\n"
+            rec_text += "   ❌ DON'T open BUY positions (against trend)"
         elif trend in ['WEAK_UP', 'WEAK_DOWN']:
-            rec_text = "   ⚠️ Tendencia débil - Precaución\n"
-            rec_text += "   ⚠️ Ajustar trailing stops más cerca\n"
-            rec_text += "   ⚠️ Posible consolidación o reversión"
+            rec_text = "   ⚠️ Weak trend - Caution\n"
+            rec_text += "   ⚠️ Adjust trailing stops closer\n"
+            rec_text += "   ⚠️ Possible consolidation or reversal"
         else:
-            rec_text = "   ⚪ Sin tendencia clara - Esperar\n"
-            rec_text += "   ⚪ No tomar nuevas posiciones"
+            rec_text = "   ⚪ No clear trend - Wait\n"
+            rec_text += "   ⚪ Don't take new positions"
 
         self.rec_textbox.configure(state="normal")
         self.rec_textbox.delete("1.0", "end")
@@ -569,33 +569,33 @@ class RenkoMonitorGUI:
         self.rec_textbox.configure(state="disabled")
 
     def show_alert(self, direction, count):
-        """Mostrar alerta de reversión"""
+        """Show reversal alert"""
         if direction == 1:
-            msg = f"🚨 ¡ALERTA DE REVERSIÓN!\n📈 CAMBIO A ALCISTA - {count} ladrillos verdes\n💡 Considera CERRAR posiciones SELL y buscar BUY"
+            msg = f"🚨 REVERSAL ALERT!\n📈 CHANGED TO BULLISH - {count} green bricks\n💡 Consider CLOSING SELL positions and look for BUY"
             color = "#28a745"
         else:
-            msg = f"🚨 ¡ALERTA DE REVERSIÓN!\n📉 CAMBIO A BAJISTA - {count} ladrillos rojos\n💡 Considera CERRAR posiciones BUY y buscar SELL"
+            msg = f"🚨 REVERSAL ALERT!\n📉 CHANGED TO BEARISH - {count} red bricks\n💡 Consider CLOSING BUY positions and look for SELL"
             color = "#dc3545"
 
         self.alert_frame.configure(fg_color=color)
         self.alert_label.configure(text=msg)
 
-        # Insertar antes del panel de control
+        # Insert before control panel
         children = list(self.root.winfo_children())
         control_index = len(children) - 1
         self.alert_frame.pack(fill="x", padx=20, pady=10, before=children[control_index])
 
-        # Reproducir sonido
+        # Play sound
         try:
             winsound.Beep(1000, 500)
         except:
             pass
 
-        # Ocultar alerta después de 5 segundos
+        # Hide alert after 5 seconds
         self.root.after(5000, lambda: self.alert_frame.pack_forget())
 
     def monitoring_loop(self):
-        """Loop principal de monitoreo"""
+        """Main monitoring loop"""
         while self.monitoring:
             try:
                 current_price = self.get_current_price()
@@ -603,10 +603,10 @@ class RenkoMonitorGUI:
                     time.sleep(1)
                     continue
 
-                # Actualizar Renko
+                # Update Renko
                 new_bricks = self.update_renko(current_price)
 
-                # Verificar reversión
+                # Check reversal
                 if new_bricks:
                     is_reversal, direction, count = self.check_reversal()
 
@@ -616,7 +616,7 @@ class RenkoMonitorGUI:
                             self.last_alert_time = now
                             self.root.after(0, lambda d=direction, c=count: self.show_alert(d, c))
 
-                # Actualizar display
+                # Update display
                 self.root.after(0, self.update_display)
 
                 time.sleep(1)
@@ -626,73 +626,73 @@ class RenkoMonitorGUI:
                 time.sleep(1)
 
     def start_monitoring(self):
-        """Iniciar monitoreo"""
-        # Obtener configuración
+        """Start monitoring"""
+        # Get configuration
         self.symbol = self.symbol_var.get()
         self.brick_size_pips = int(self.brick_size_var.get())
         self.brick_size = self.brick_size_pips / 10000
 
-        # Resetear datos
+        # Reset data
         self.bricks = []
         self.current_brick_price = None
         self.last_alert_time = None
 
-        # Conectar a MT5
+        # Connect to MT5
         if not self.mt5_connected:
             if not self.connect_mt5():
                 return
 
-        # Inicializar Renko
+        # Initialize Renko
         if not self.initialize_renko():
-            messagebox.showerror("Error", f"No se pudo inicializar Renko para {self.symbol}\n\nVerifica que el símbolo exista en tu broker.")
+            messagebox.showerror("Error", f"Could not initialize Renko for {self.symbol}\n\nVerify that the symbol exists with your broker.")
             return
 
-        # Actualizar título
-        self.root.title(f"🧱 Monitor Renko en Vivo - {self.symbol}")
+        # Update title
+        self.root.title(f"🧱 Live Renko Monitor - {self.symbol}")
 
-        # Actualizar display inmediatamente con los valores iniciales
+        # Update display immediately with initial values
         self.update_display()
 
-        # Cambiar estado de botones
+        # Change button states
         self.monitoring = True
         self.start_button.configure(state="disabled")
         self.stop_button.configure(state="normal")
-        self.status_label.configure(text="🟢 Monitoreando...", text_color="#00ff00")
+        self.status_label.configure(text="🟢 Monitoring...", text_color="#00ff00")
 
-        # Iniciar thread de monitoreo
+        # Start monitoring thread
         self.monitor_thread = threading.Thread(target=self.monitoring_loop, daemon=True)
         self.monitor_thread.start()
 
     def stop_monitoring(self):
-        """Detener monitoreo"""
+        """Stop monitoring"""
         self.monitoring = False
         self.start_button.configure(state="normal")
         self.stop_button.configure(state="disabled")
-        self.status_label.configure(text="⏸️ Detenido", text_color="#FFD700")
+        self.status_label.configure(text="⏸️ Stopped", text_color="#FFD700")
 
     def on_window_resize(self, event):
-        """Reorganizar layout cuando cambia el tamaño de la ventana"""
+        """Reorganize layout when window size changes"""
         if event.widget != self.root:
             return
 
         window_width = self.root.winfo_width()
 
-        # Si la ventana es menor a 1000px, cambiar a layout vertical
+        # If window is less than 1000px, change to vertical layout
         if window_width < 1000 and self.current_layout == "horizontal":
             self.current_layout = "vertical"
             self.reorganize_layout()
-        # Si la ventana es mayor a 1000px, cambiar a layout horizontal
+        # If window is greater than 1000px, change to horizontal layout
         elif window_width >= 1000 and self.current_layout == "vertical":
             self.current_layout = "horizontal"
             self.reorganize_layout()
 
     def reorganize_layout(self):
-        """Reorganizar paneles según el layout actual"""
+        """Reorganize panels according to current layout"""
         if not self.trend_frame or not self.rec_frame:
             return
 
         if self.current_layout == "vertical":
-            # Layout vertical: paneles uno arriba del otro
+            # Vertical layout: panels stacked on top of each other
             self.trend_frame.grid_forget()
             self.rec_frame.grid_forget()
 
@@ -703,7 +703,7 @@ class RenkoMonitorGUI:
             self.info_container.grid_rowconfigure(1, weight=1)
             self.info_container.grid_columnconfigure(0, weight=1)
         else:
-            # Layout horizontal: paneles lado a lado
+            # Horizontal layout: panels side by side
             self.trend_frame.grid_forget()
             self.rec_frame.grid_forget()
 
@@ -715,14 +715,14 @@ class RenkoMonitorGUI:
             self.info_container.grid_columnconfigure(1, weight=1)
 
     def on_closing(self):
-        """Manejar cierre de ventana"""
+        """Handle window closing"""
         self.monitoring = False
         if self.mt5_connected:
             mt5.shutdown()
         self.root.destroy()
 
     def run(self):
-        """Ejecutar aplicación"""
+        """Run application"""
         self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
         self.root.mainloop()
 
@@ -732,8 +732,8 @@ if __name__ == "__main__":
         app = RenkoMonitorGUI()
         app.run()
     except KeyboardInterrupt:
-        print("\n\n⏸️ Monitor detenido por el usuario")
-        print("✅ Cerrando aplicación...")
+        print("\n\n⏸️ Monitor stopped by user")
+        print("✅ Closing application...")
         try:
             if app.monitoring:
                 app.monitoring = False
@@ -741,4 +741,4 @@ if __name__ == "__main__":
                 mt5.shutdown()
         except:
             pass
-        print("✅ Aplicación cerrada correctamente\n")
+        print("✅ Application closed successfully\n")

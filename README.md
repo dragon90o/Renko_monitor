@@ -1,96 +1,96 @@
 # Renko Live Monitor
 
-Monitor de gráficos Renko en tiempo real para trading de Forex (EUR/USD).
+Real-time Renko chart monitor for Forex trading (EUR/USD).
 
-## Características
+## Features
 
-- Actualización automática cada segundo
-- Alertas sonoras de reversión
-- Visualización clara de tendencia actual
-- Histórico de últimos 20 ladrillos
-- Detección automática de cambios de tendencia
+- Automatic updates every second
+- Reversal sound alerts
+- Clear visualization of current trend
+- History of last 20 bricks
+- Automatic trend change detection
 
-## Requisitos Previos
+## Prerequisites
 
 ### 1. MetaTrader 5
 
-Debes tener **MetaTrader 5** instalado y en ejecución:
+You must have **MetaTrader 5** installed and running:
 
-1. Descarga MetaTrader 5 desde [aquí](https://www.metatrader5.com/es/download)
-2. Instala y configura tu cuenta de trading
-3. **IMPORTANTE**: Mantén MT5 abierto mientras ejecutas el monitor
-4. Asegúrate de que el símbolo EUR/USD esté disponible en tu broker
+1. Download MetaTrader 5 from [here](https://www.metatrader5.com/en/download)
+2. Install and configure your trading account
+3. **IMPORTANT**: Keep MT5 open while running the monitor
+4. Make sure the EUR/USD symbol is available with your broker
 
 ### 2. Python
 
-Requiere Python 3.8 o superior.
+Requires Python 3.8 or higher.
 
-## Instalación
+## Installation
 
-### Paso 1: Instalar dependencias de Python
+### Step 1: Install Python dependencies
 
-Abre una terminal en este directorio y ejecuta:
+Open a terminal in this directory and run:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Esto instalará:
-- `MetaTrader5`: Librería para conectarse a MT5 y obtener datos en tiempo real
-- `pandas`: Procesamiento de datos
-- `colorama`: Colores en la terminal
-- `playsound`: Alertas sonoras (opcional)
+This will install:
+- `MetaTrader5`: Library to connect to MT5 and get real-time data
+- `pandas`: Data processing
+- `colorama`: Terminal colors
+- `playsound`: Sound alerts (optional)
 
-### Paso 2: Verificar instalación
+### Step 2: Verify installation
 
-Verifica que MetaTrader 5 esté instalado correctamente:
+Verify that MetaTrader 5 is installed correctly:
 
 ```python
 import MetaTrader5 as mt5
 print(mt5.__version__)
 ```
 
-## Uso
+## Usage
 
-### Ejecutar el monitor:
+### Run the monitor:
 
 ```bash
-python renko_live_monitor.py
+python renko_monitor_gui.py
 ```
 
-### Configuración
+### Configuration
 
-Puedes ajustar los parámetros en el código:
+You can adjust the parameters in the code:
 
 ```python
 monitor = RenkoLiveMonitor(
-    symbol="EURUSD",        # Par de divisas
-    brick_size_pips=10      # Tamaño del ladrillo en pips
+    symbol="EURUSD",        # Currency pair
+    brick_size_pips=10      # Brick size in pips
 )
 ```
 
-### Detener el monitor
+### Stop the monitor
 
-Presiona `Ctrl+C` para detener el monitor de forma segura.
+Press `Ctrl+C` to stop the monitor safely.
 
-## Notas Importantes
+## Important Notes
 
-1. **MT5 debe estar abierto**: El monitor no funcionará si MetaTrader 5 no está ejecutándose
-2. **Conexión a internet**: Necesitas conexión estable para recibir datos en tiempo real
-3. **Cuenta de trading**: Aunque solo lee datos, necesitas una cuenta (demo o real) configurada en MT5
+1. **MT5 must be open**: The monitor will not work if MetaTrader 5 is not running
+2. **Internet connection**: You need a stable connection to receive real-time data
+3. **Trading account**: Although it only reads data, you need a configured account (demo or real) in MT5
 
-## Solución de Problemas
+## Troubleshooting
 
-### Error: "No se pudo conectar a MT5"
-- Verifica que MetaTrader 5 esté abierto
-- Asegúrate de tener una cuenta configurada (demo o real)
-- Reinicia MT5 e intenta de nuevo
+### Error: "Could not connect to MT5"
+- Verify that MetaTrader 5 is open
+- Make sure you have a configured account (demo or real)
+- Restart MT5 and try again
 
-### Error: "No se pudo obtener precio"
-- Verifica que el símbolo EURUSD esté disponible en tu broker
-- Comprueba tu conexión a internet
-- Verifica que el mercado esté abierto (Forex está cerrado los fines de semana)
+### Error: "Could not get price"
+- Verify that the EURUSD symbol is available with your broker
+- Check your internet connection
+- Verify that the market is open (Forex is closed on weekends)
 
-## Contacto
+## Contact
 
-Si tienes problemas o sugerencias, por favor crea un issue.
+If you have problems or suggestions, please create an issue.
